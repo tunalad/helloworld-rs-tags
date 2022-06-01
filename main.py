@@ -44,17 +44,24 @@ def get_next_page(soup):
 def draw_plot(x, y):
     pyplot.style.use("classic")
     pyplot.bar(x, y, color=(0.2, 0.35, 1))
+
+    pyplot.ylabel("Occurrence", weight="normal")
+    pyplot.xlabel("Tag", weight="normal")
+
+    for i in range(len(x)):
+        pyplot.text(i, y[i]//2, y[i], color="#FFFFFF", weight="bold")
+        #pyplot.text(i, y[i]//2, y[i], color="#000000", weight="normal")
+
     pyplot.show()
 
 
 if __name__ == "__main__":
-    search, senioritet = "python", "0"
+    search, senioritet = "python", "1"
     URL = f"https://www.helloworld.rs/oglasi-za-posao?q={search}&scope=full&senioritet[0]={senioritet}"
 
     # scrapping website data
     doc = get_soup(URL)
     tags_list = get_job_tags_array(doc)
-    print(f"Total tags count for {search} (including duplicates):", len(tags_list))
 
     # organizing data into a dictionary
     tags_dict = []
@@ -64,13 +71,16 @@ if __name__ == "__main__":
             'count': int(tags_list.count(tag))
         })
 
+    print(f"Total tags count for {search} (including duplicates):", len(tags_list))
+    print(f"Total tags found for {search}:", len(tags_dict))
+
     # sorting data (from most to least)
     tags_dict = sorted(tags_dict, key=lambda x: x['count'], reverse=True)
 
     # regrouping data for plotting
     tag_names = []
     tag_counts = []
-    for t in range(len(tags_dict)):
+    for t in range(len(tags_dict[:10])):
         tag_names.append(tags_dict[t].get('tag'))
         tag_counts.append(tags_dict[t].get('count'))
 
