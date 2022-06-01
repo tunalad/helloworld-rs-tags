@@ -49,14 +49,24 @@ def draw_plot(x, y):
     pyplot.xlabel("Tag", weight="normal")
 
     for i in range(len(x)):
-        pyplot.text(i, y[i]//2, y[i], color="#FFFFFF", weight="bold")
-        #pyplot.text(i, y[i]//2, y[i], color="#000000", weight="normal")
+        pyplot.text(i, y[i] // 2, y[i], color="#FFFFFF", weight="bold")
+        # pyplot.text(i, y[i]//2, y[i], color="#000000", weight="normal")
 
     pyplot.show()
 
 
+def input_handler(text=""):
+    text_in = input(text)
+    if text_in.isspace() or text_in == "":
+        exit("Invalid input")
+    else:
+        return text_in.replace(" ", "-")
+
+
 if __name__ == "__main__":
-    search, senioritet = "python", "1"
+    search = input_handler("Keyword: ")
+    senioritet = input_handler("Senirity: ")
+
     URL = f"https://www.helloworld.rs/oglasi-za-posao?q={search}&scope=full&senioritet[0]={senioritet}"
 
     # scrapping website data
