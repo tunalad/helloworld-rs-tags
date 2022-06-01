@@ -3,6 +3,7 @@ from pprint import pprint
 
 import requests
 from bs4 import BeautifulSoup as bs
+from matplotlib import pyplot
 
 
 def get_soup(url):
@@ -40,14 +41,22 @@ def get_next_page(soup):
         return None
 
 
+def draw_plot(x, y):
+    pyplot.style.use("classic")
+    pyplot.bar(x, y, color=(0.2, 0.35, 1))
+    pyplot.show()
+
+
 if __name__ == "__main__":
     search, senioritet = "python", "0"
     URL = f"https://www.helloworld.rs/oglasi-za-posao?q={search}&scope=full&senioritet[0]={senioritet}"
 
+    # scrapping website data
     doc = get_soup(URL)
     tags_list = get_job_tags_array(doc)
     print(f"Total tags count for {search} (including duplicates):", len(tags_list))
 
+    # organizing data into a dictionary
     tags_dict = []
     for tag in list(dict.fromkeys(tags_list)):
         tags_dict.append({
@@ -55,4 +64,14 @@ if __name__ == "__main__":
             'count': int(tags_list.count(tag))
         })
 
-    pprint(tags_dict)
+    # sorting data (from most to least)
+    tags_dict = sorted(tags_dict, key=lambda x: x['count'], reverse=True)
+
+    # regrouping data for plotting
+    tag_names = []
+    tag_counts = []
+    for t in range(len(tags_dict)):
+        tag_names.append(tags_dict[t].get('tag'))
+        tag_counts.append(tags_dict[t].get('count'))
+
+    draw_plot(tag_names, tag_counts)
