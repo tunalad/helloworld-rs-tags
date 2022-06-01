@@ -39,11 +39,20 @@ def get_next_page(soup):
     except:
         return None
 
+
 if __name__ == "__main__":
     search, senioritet = "python", "0"
     URL = f"https://www.helloworld.rs/oglasi-za-posao?q={search}&scope=full&senioritet[0]={senioritet}"
 
     doc = get_soup(URL)
     tags_list = get_job_tags_array(doc)
+    print(f"Total tags count for {search} (including duplicates):", len(tags_list))
 
-    pprint("Total tags count (including duplicates):", len(tags_list))
+    tags_dict = []
+    for tag in list(dict.fromkeys(tags_list)):
+        tags_dict.append({
+            'tag': tag,
+            'count': int(tags_list.count(tag))
+        })
+
+    pprint(tags_dict)
