@@ -21,6 +21,15 @@ def get_job_tags_array(soup):
     return list
 
 
+def get_next_page():
+    try:
+        pages_list = doc.find("div", class_="flex items-center justify-center gap-3 md:gap-4 pagination")
+        btn_next = pages_list.find("i", class_="las la-angle-right text-lg").parent
+
+        return "https://www.helloworld.rs" + btn_next['href']
+    except:
+        return None
+
 if __name__ == "__main__":
     search, senioritet = "python", "0"
     URL = f"https://www.helloworld.rs/oglasi-za-posao?q={search}&scope=full&senioritet[0]={senioritet}"
@@ -28,4 +37,4 @@ if __name__ == "__main__":
     doc = get_soup(URL)
     tags_list = get_job_tags_array(doc)
 
-    pprint(tags_list)
+    print(get_next_page())
