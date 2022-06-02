@@ -4,6 +4,7 @@ from pprint import pprint
 import requests
 from bs4 import BeautifulSoup as bs
 from matplotlib import pyplot
+from urllib.parse import quote
 
 
 def get_soup(url):
@@ -60,12 +61,15 @@ def input_handler(text=""):
     if text_in.isspace() or text_in == "":
         exit("Invalid input")
     else:
+
         return text_in.replace(" ", "-")
 
 
 if __name__ == "__main__":
     search = input_handler("Keyword: ")
-    senioritet = input_handler("Senirity: ")
+    search = quote(search)
+    senioritet = input_handler("Seniority: ")
+
 
     URL = f"https://www.helloworld.rs/oglasi-za-posao?q={search}&scope=full&senioritet[0]={senioritet}"
 
@@ -83,6 +87,9 @@ if __name__ == "__main__":
 
     print(f"Total tags count for {search} (including duplicates):", len(tags_list))
     print(f"Total tags found for {search}:", len(tags_dict))
+    get_bars = int(input_handler("Display how many first tags?: "))
+    if get_bars <= 0:
+        exit("Invalid input")
 
     # sorting data (from most to least)
     tags_dict = sorted(tags_dict, key=lambda x: x['count'], reverse=True)
@@ -90,7 +97,7 @@ if __name__ == "__main__":
     # regrouping data for plotting
     tag_names = []
     tag_counts = []
-    for t in range(len(tags_dict[:10])):
+    for t in range(len(tags_dict[:get_bars])):
         tag_names.append(tags_dict[t].get('tag'))
         tag_counts.append(tags_dict[t].get('count'))
 
