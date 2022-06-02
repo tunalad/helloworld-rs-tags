@@ -61,14 +61,18 @@ def input_handler(text=""):
     if text_in.isspace() or text_in == "":
         exit("Invalid input")
     else:
-
         return text_in.replace(" ", "-")
 
 
 if __name__ == "__main__":
-    search = input_handler("Keyword: ")
+    search = input_handler("Search by keyword: ")
     search = quote(search)
-    senioritet = input_handler("Seniority: ")
+    senioritet = input_handler("""Seniority
+    1 - junior
+    2 - intermediate
+    3 - senior
+    (other numbers will ignore seniority filtering)
+    >: """)
 
 
     URL = f"https://www.helloworld.rs/oglasi-za-posao?q={search}&scope=full&senioritet[0]={senioritet}"
@@ -85,7 +89,7 @@ if __name__ == "__main__":
             'count': int(tags_list.count(tag))
         })
 
-    print(f"Total tags count for {search} (including duplicates):", len(tags_list))
+    print(len(tags_list), "total tags found")
     print(f"Total tags found for {search}:", len(tags_dict))
     get_bars = int(input_handler("Display how many first tags?: "))
     if get_bars <= 0:
