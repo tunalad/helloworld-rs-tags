@@ -13,12 +13,12 @@ def get_soup(url):
 
 
 def get_job_tags_array(soup):
-    tags = soup.find_all("button", class_="btn btn-xs btn-primary jobtag __jobtag w-auto")
-    print("Total tag count on this page:", len(tags))
+    tags = soup.find_all("a", class_="btn btn-xs btn-primary w-auto jobtag __jobtag")
+    # print("Total tag count on this page:", len(tags))
 
     list = []
     for tag in tags:
-        list.append(tag.span.string)
+        list.append(tag.text)
 
     page_next = get_next_page(soup)
 
@@ -26,7 +26,8 @@ def get_job_tags_array(soup):
         soup2 = get_soup(page_next)
         list += get_job_tags_array(soup2)
     else:
-        print("That all of the pages")
+        # print("That all of the pages")
+        pass
 
     return list
 
@@ -36,7 +37,7 @@ def get_next_page(soup):
         pages_list = soup.find("div", class_="flex items-center justify-center gap-3 md:gap-4 pagination")
         btn_next = pages_list.find("i", class_="las la-angle-right text-lg").parent
 
-        print("https://www.helloworld.rs" + btn_next['href'])
+        # print("https://www.helloworld.rs" + btn_next['href'])
         return "https://www.helloworld.rs" + btn_next['href']
     except:
         return None
@@ -89,9 +90,13 @@ if __name__ == "__main__":
             'count': int(tags_list.count(tag))
         })
 
-    print(len(tags_list), "total tags found")
-    print(f"Total tags found for {search}:", len(tags_dict))
+    print("Scrapping tags, please wait")
+
+    print(len(tags_list), "tags counted")
+    print(f"Tags found for {search}:", len(tags_dict))
+
     get_bars = int(input_handler("Display how many first tags?: "))
+
     if get_bars <= 0:
         exit("Invalid input")
 
