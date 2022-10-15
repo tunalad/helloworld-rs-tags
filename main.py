@@ -14,7 +14,6 @@ def get_soup(url):
 
 def get_job_tags_array(soup):
     tags = soup.find_all("a", class_="btn btn-xs btn-primary w-auto jobtag __jobtag")
-    # print("Total tag count on this page:", len(tags))
 
     list = []
     for tag in tags:
@@ -25,9 +24,6 @@ def get_job_tags_array(soup):
     if page_next != None:
         soup2 = get_soup(page_next)
         list += get_job_tags_array(soup2)
-    else:
-        # print("That all of the pages")
-        pass
 
     return list
 
@@ -37,7 +33,6 @@ def get_next_page(soup):
         pages_list = soup.find("div", class_="flex items-center justify-center gap-3 md:gap-4 pagination")
         btn_next = pages_list.find("i", class_="las la-angle-right text-lg").parent
 
-        # print("https://www.helloworld.rs" + btn_next['href'])
         return "https://www.helloworld.rs" + btn_next['href']
     except:
         return None
