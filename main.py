@@ -13,7 +13,7 @@ def get_soup(url):
 
 
 def get_job_tags_array(soup):
-    tags = soup.find_all("a", class_="btn btn-xs btn-primary w-auto jobtag __jobtag")
+    tags = soup.find_all("a", class_="btn btn-xs btn-primary w-auto jobtag __jobtag __ga4_job_tech_tag")
 
     list = []
     for tag in tags:
